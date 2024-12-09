@@ -27,16 +27,36 @@ A full-stack web application for booking movie tickets, built with Django REST F
 ## Quick Start
 
 1. Clone the repository: 
-```
+```bash
 git clone https://github.com/rameeskv0/movie_booking_platform.git
 cd movie_booking_platform
 ```
-2. Start the application:
+
+2. Build and start the application:
 ```bash
+# Build the images
+docker-compose build
+
+# Start the services in detached mode
 docker-compose up -d
+
+# Check the logs (optional)
+docker-compose logs -f
 ```
 
-3. Access the applications:
+3. Initialize the database:
+```bash
+# Create data directory
+mkdir -p data
+
+# Run migrations
+docker-compose exec backend python manage.py migrate
+
+# Create superuser (if needed)
+docker-compose exec backend python manage.py createsuperuser
+```
+
+4. Access the applications:
 - Frontend: http://localhost:3000
 - Backend API: http://localhost:8000/api
 - Admin Interface: http://localhost:8000/admin
@@ -114,17 +134,44 @@ docker-compose exec frontend npm install [package-name]
 ## Docker Commands
 
 ```bash
-# Build and start services
-docker-compose up -d --build
+# Build the images
+docker-compose build
+
+# Start the services
+docker-compose up -d
 
 # View logs
 docker-compose logs -f
 
+# View logs for specific service
+docker-compose logs -f backend
+docker-compose logs -f frontend
+
 # Stop services
 docker-compose down
 
-# Remove volumes
+# Stop services and remove volumes
 docker-compose down -v
+
+# Rebuild and restart services
+docker-compose down
+docker-compose build
+docker-compose up -d
+
+# Check running containers
+docker-compose ps
+
+# Restart a specific service
+docker-compose restart backend
+docker-compose restart frontend
+
+# Execute commands in containers
+docker-compose exec backend python manage.py shell
+docker-compose exec frontend npm install [package-name]
+
+# Clean up everything (use with caution)
+docker-compose down -v
+docker system prune -f
 ```
 
 ## Contributing

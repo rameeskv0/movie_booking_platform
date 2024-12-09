@@ -50,3 +50,4 @@ jobs:
       run: |
         CI=true npm test -- --verbose
       continue-on-error: true  # This will show the test output but not fail the workflow
+      

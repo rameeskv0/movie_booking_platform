@@ -1,0 +1,35 @@
+version: '3.8'
+
+services:
+  backend:
+    build: 
+      context: .
+      dockerfile: docker/backend/Dockerfile
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/app
+      - ./db.sqlite3:/app/data/db.sqlite3
+    environment:
+      - DEBUG=1
+      - DJANGO_SECRET_KEY=django-insecure-t+zr-7-l-tcctnkca!c!+6g0yuysp_*^wv782_z5_*45czl6uu
+      - ALLOWED_HOSTS=localhost,127.0.0.1
+    restart: unless-stopped
+    command: python manage.py runserver 0.0.0.0:8000
+
+  frontend:
+    build:
+      context: .
+      dockerfile: docker/frontend/Dockerfile
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./movie-booking-frontend:/app
+      - /app/node_modules
+    environment:
+      - REACT_APP_API_URL=http://localhost:8000/api
+    depends_on:
+      - backend
+
+volumes:
+  sqlite_data:

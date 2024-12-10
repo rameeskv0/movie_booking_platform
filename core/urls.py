@@ -1,4 +1,4 @@
-"""
+h"""
 URL configuration for core project.
 
 The `urlpatterns` list routes URLs to views. For more information please see:
